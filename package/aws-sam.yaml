@@ -1,0 +1,26 @@
+﻿AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: Streamdata.io Github Users Search Streaming to Amazon S3 Data Lake Using Lambda
+Resources:
+  streamdataiogithubsearchusers:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs6.10
+      CodeUri: s3://streamdata-serverless/streamdata-io-github-search-users/package.zip
+      Description: Streamdata.io Github Users Search Streaming to Amazon S3 Data Lake Using Lambda
+      MemorySize: 128
+      Timeout: 63
+      Policies:
+        - LambdaInvokePolicy:
+            FunctionName: streamdata-io-github-search-users
+        - S3CrudPolicy:
+            BucketName: streaming-data-lake
+      Environment:
+        Variables:
+          targetUrl: 'https://api.github.com/search/users'
+          query: postman
+          github_token: Github-Token
+          s3bucket: streaming-data-lake
+          targetFolder: github-search-users
+          appToken: Streamdata.io-Application-Token
